@@ -1,9 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<vector<long long>> dp;
+vector<long long> dp;
 vector<int> coins;
 
+/*
 long long func(int i, int x) {
     if (i == 0) {
         if (x % coins[0] == 0) return x / coins[0];
@@ -20,6 +21,7 @@ long long func(int i, int x) {
 
     return dp[i][x] = min(pick, not_pick);
 }
+*/
 
 int main() {
     int n, x;
@@ -30,12 +32,20 @@ int main() {
         cin >> coins[i];
     }
 
-    dp.resize(n, vector<long long>(x + 1, -1));
+    dp.resize(x+1, INT_MAX);
+    dp[0] = 0;
 
-    long long ans = func(n - 1, x);
-    if (ans >= 1e9) cout << -1 << "\n";
-    else cout << ans << "\n";
+    for(int i = 1 ; i<=x ; i++){
+    	for(int j=0 ; j<n ; j++){
+	    if(i >= coins[j]){
+	    	dp[i] = min(dp[i], dp[i-coins[j]]+1);
+	    }
+	}
+    }
 
+    if (dp[x] >= 1e9) cout << -1 << "\n";
+    else cout << dp[x] << "\n";
+ 
     return 0;
 }
 
